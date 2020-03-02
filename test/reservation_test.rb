@@ -5,6 +5,7 @@ describe "Reservation class" do
 		before do 
 			@reservation = Hotel::Reservation.new(
 				id: 1,
+				room: 15,
 				start_date: "March 2 2020",
 				end_date: "March 5 2020"
 			)
