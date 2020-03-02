@@ -3,7 +3,7 @@ module Hotel
 		attr_reader :rooms, :reservations
 
 		def initialize
-		
+			@rooms = (1..20).to_a
 		end
 
 		# I can access the list of all of the rooms in the hotel
