@@ -6,8 +6,8 @@ describe "Reservation class" do
 			@reservation = Hotel::Reservation.new(
 				id: 1,
 				room: 15,
-				start_date: "March 2 2020",
-				end_date: "March 5 2020"
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
 			)
 		end
 
