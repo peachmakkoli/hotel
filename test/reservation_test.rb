@@ -25,6 +25,10 @@ describe "Reservation class" do
 		end
 	end
 
+	describe "Reservation property" do
+
+	end
+
 	describe "#date_range" do
 		it "returns an array with the correct start and end values" do
 			range = @reservation.date_range
@@ -34,6 +38,7 @@ describe "Reservation class" do
 		end		
 
 		it "returns all dates between the start and end dates" do
+			# tidy up because date objects can be compared
 			range = @reservation.date_range
 			second_date = range[1].strftime("%b %d %Y")
 			third_date = range[2].strftime("%b %d %Y")
