@@ -11,10 +11,9 @@ module Hotel
 			@start_date = start_date
 			@end_date = end_date
 			
-			# I want exception raised when an invalid date range is provided, so that I can't make a reservation for an invalid date range
-		end		
+			raise ArgumentError.new("Invalid date range!") if @start_date > @end_date
+		end	
 	
-		
 		# define a method that calculates the number of nights for each stay, depending on the date range
 
 		# I can get the total cost for a given reservation
