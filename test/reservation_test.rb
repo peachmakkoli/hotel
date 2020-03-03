@@ -30,20 +30,20 @@ describe "Reservation class" do
 	end
 
 	describe "#date_range" do
-		it "returns an array with the correct start and end values" do
-			range = @reservation.date_range
-			expect(range).must_be_kind_of Array
-			expect(range.first).must_equal @reservation.start_date
-			expect(range.last).must_equal @reservation.end_date
+		before do
+			@range = @reservation.date_range
+		end
+
+		it "returns an array with the correct length and start/end values" do
+			expect(@range).must_be_kind_of Array
+			expect(@range.length).must_equal 4
+			expect(@range.first).must_equal @reservation.start_date
+			expect(@range.last).must_equal @reservation.end_date
 		end		
 
 		it "returns all dates between the start and end dates" do
-			# tidy up because date objects can be compared
-			range = @reservation.date_range
-			second_date = range[1].strftime("%b %d %Y")
-			third_date = range[2].strftime("%b %d %Y")
-			expect(second_date).must_equal "Mar 03 2020" 
-			expect(third_date).must_equal "Mar 04 2020"
+			expect(@range[1]).must_equal @reservation.start_date + 1
+			expect(@range[2]).must_equal @reservation.start_date + 2
 		end		
 	end
 
