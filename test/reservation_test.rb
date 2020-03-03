@@ -23,5 +23,10 @@ describe "Reservation class" do
 				end_date: Date.new(2020,3,2)
 			) }.must_raise ArgumentError
 		end
+
+		it "calculates the nights of stay accurately" do
+			expect(@reservation.nights).must_equal 3
+		end
+		
 	end
 end
