@@ -14,6 +14,10 @@ module Hotel
 			raise ArgumentError.new("Invalid date range!") if @start_date > @end_date
 		end	
 	
+		def date_range
+			return (@start_date..@end_date).to_a
+		end
+
 		def nights
 			return @end_date - @start_date
 		end

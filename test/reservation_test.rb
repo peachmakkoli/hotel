@@ -25,6 +25,23 @@ describe "Reservation class" do
 		end
 	end
 
+	describe "#date_range" do
+		it "returns an array with the correct start and end values" do
+			range = @reservation.date_range
+			expect(range).must_be_kind_of Array
+			expect(range.first).must_equal @reservation.start_date
+			expect(range.last).must_equal @reservation.end_date
+		end		
+
+		it "returns all dates between the start and end dates" do
+			range = @reservation.date_range
+			second_date = range[1].strftime("%b %d %Y")
+			third_date = range[2].strftime("%b %d %Y")
+			expect(second_date).must_equal "Mar 03 2020" 
+			expect(third_date).must_equal "Mar 04 2020"
+		end		
+	end
+
 	describe "#nights" do
 		it "calculates the nights of stay accurately" do
 			expect(@reservation.nights).must_equal 3
