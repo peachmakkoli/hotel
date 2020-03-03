@@ -18,12 +18,73 @@ describe "FrontDesk class" do
 		end
 	end
 
+	describe "#add_reservation" do
+		it "adds the reservation passed in to the reservations array" do
+			reservation = Hotel::Reservation.new(
+				id: 1,
+				room: 15,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			before_length = @front_desk.reservations.length
+			@front_desk.add_reservation(reservation)
+			after_length = @front_desk.reservations.length
+			expect(@front_desk.reservations.last).must_be_kind_of Hotel::Reservation
+			expect(before_length).must_equal 0
+			expect(after_length).must_equal 1
+		end
+	end
+
 	describe "#reserve_room" do
 		it "can reserve a room given a start date and an end date" do
 			start_date = Date.new(2020,3,2)
 			end_date = Date.new(2020,3,5)
 			reservation = @front_desk.reserve_room(start_date, end_date)
 			expect(reservation).must_be_kind_of Hotel::Reservation
+		end
+
+		it "assigns a unique id number" do
+		
+		end
+
+		it "adds the new reservation to the reservations array" do
+			
+		end
+	end
+
+	describe "#reservations_by_room" do
+		before do
+			reservation1 = Hotel::Reservation.new(
+				id: 1,
+				room: 15,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			reservation2 = Hotel::Reservation.new(
+				id: 2,
+				room: 20,
+				start_date: Date.new(2020,3,3),
+				end_date: Date.new(2020,3,4)
+			)
+			reservation3 = Hotel::Reservation.new(
+				id: 3,
+				room: 15,
+				start_date: Date.new(2020,3,5),
+				end_date: Date.new(2020,3,10)
+			)
+			@front_desk.add_reservation(reservation1)
+			@front_desk.add_reservation(reservation2)
+			@front_desk.add_reservation(reservation3)
+		end
+
+		it "returns an array of Reservations" do
+			start_date = Date.new(2020,3,2)
+			end_date = Date.new(2020,3,5)
+			selected_reservations = @front_desk.reservations_by_room(15, start_date, end_date)
+			
+			expect(@front_desk.reservations.length).must_equal 3
+			expect(selected_reservations).must_be_kind_of Array
+			expect(selected_reservations.first).must_be_kind_of Hotel::Reservation
 		end
 	end
 end
