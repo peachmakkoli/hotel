@@ -18,6 +18,8 @@ module Hotel
 			return @end_date - @start_date
 		end
 
-		# I can get the total cost for a given reservation
+		def total_cost
+			return nights * 200.0
+		end
 	end
 end
