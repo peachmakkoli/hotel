@@ -16,7 +16,7 @@ module Hotel
 		def reserve_room(start_date, end_date)
 			new_reservation = Hotel::Reservation.new(
 				id: @reservations.length + 1,
-				room: nil, # placeholder
+				room: @rooms.sample, # placeholder
 				start_date: start_date,
 				end_date: end_date
 			)
@@ -29,5 +29,6 @@ module Hotel
 		end
 
 		# I can access the list of reservations for a specific date, so that I can track reservations by date
+
 	end
 end

@@ -54,6 +54,12 @@ describe "FrontDesk class" do
 			expect(@reservation3.id).must_equal 3
 		end
 
+		it "assigns a valid room number" do
+			expect(@front_desk.rooms).must_include @reservation1.room
+			expect(@front_desk.rooms).must_include @reservation2.room
+			expect(@front_desk.rooms).must_include @reservation3.room
+		end
+
 		it "adds the new reservations to the reservations array" do
 			expect(@front_desk.reservations.length).must_equal 3
 			expect(@front_desk.reservations.first).must_equal @reservation1
