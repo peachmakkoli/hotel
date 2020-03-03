@@ -25,7 +25,7 @@ module Hotel
 		end
 
 		def reservations_by_room(room, start_date, end_date)
-			return @reservations.select { |reservation| reservation.room == room && reservation.date_range.include?(start_date) && reservation.date_range.include?(end_date) } 
+			return @reservations.select { |reservation| reservation.room == room && reservation.date_range.include?(start_date) || reservation.date_range.include?(end_date) } 
 		end
 
 		def reservations_by_date(date)
