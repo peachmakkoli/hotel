@@ -14,12 +14,14 @@ module Hotel
 		end
 
 		def reserve_room(start_date, end_date)
-			return Hotel::Reservation.new(
+			new_reservation = Hotel::Reservation.new(
 				id: @reservations.length + 1,
 				room: nil, # placeholder
 				start_date: start_date,
 				end_date: end_date
 			)
+			add_reservation(new_reservation)
+			return new_reservation
 		end
 
 		def reservations_by_room(room, start_date, end_date)

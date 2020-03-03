@@ -36,19 +36,28 @@ describe "FrontDesk class" do
 	end
 
 	describe "#reserve_room" do
-		it "can reserve a room given a start date and an end date" do
+		before do
 			start_date = Date.new(2020,3,2)
 			end_date = Date.new(2020,3,5)
-			reservation = @front_desk.reserve_room(start_date, end_date)
-			expect(reservation).must_be_kind_of Hotel::Reservation
+			@reservation1 = @front_desk.reserve_room(start_date, end_date)
+			@reservation2 = @front_desk.reserve_room(start_date + 5, end_date + 5)
+			@reservation3 = @front_desk.reserve_room(start_date + 5, end_date + 5)
 		end
 
-		it "assigns a unique id number" do
-		
+		it "can reserve a room given a start date and an end date" do
+			expect(@reservation1).must_be_kind_of Hotel::Reservation
 		end
 
-		it "adds the new reservation to the reservations array" do
-			
+		it "assigns a unique id number to each Reservation" do
+			expect(@reservation1.id).must_equal 1
+			expect(@reservation2.id).must_equal 2
+			expect(@reservation3.id).must_equal 3
+		end
+
+		it "adds the new reservations to the reservations array" do
+			expect(@front_desk.reservations.length).must_equal 3
+			expect(@front_desk.reservations.first).must_equal @reservation1
+			expect(@front_desk.reservations.last).must_equal @reservation3
 		end
 	end
 
