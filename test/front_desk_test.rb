@@ -97,9 +97,52 @@ describe "FrontDesk class" do
 			end_date = Date.new(2020,3,5)
 			selected_reservations = @front_desk.reservations_by_room(15, start_date, end_date)
 			
-			expect(@front_desk.reservations.length).must_equal 3
 			expect(selected_reservations).must_be_kind_of Array
 			expect(selected_reservations.first).must_be_kind_of Hotel::Reservation
+		end
+
+		it "can access the list of reservations for a specified room and a given date range" do
+
+		end
+	end
+
+	describe "#reservations_by_date" do
+		before do
+			@reservation1 = Hotel::Reservation.new(
+				id: 1,
+				room: 15,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@reservation2 = Hotel::Reservation.new(
+				id: 2,
+				room: 20,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,4)
+			)
+			@reservation3 = Hotel::Reservation.new(
+				id: 3,
+				room: 15,
+				start_date: Date.new(2020,3,5),
+				end_date: Date.new(2020,3,10)
+			)
+			@front_desk.add_reservation(@reservation1)
+			@front_desk.add_reservation(@reservation2)
+			@front_desk.add_reservation(@reservation3)
+			
+			@selected_reservations = @front_desk.reservations_by_date(Date.new(2020,3,2))
+		end
+	
+		it "returns an array of Reservations" do
+			expect(@selected_reservations).must_be_kind_of Array
+			expect(@selected_reservations.first).must_be_kind_of Hotel::Reservation
+		end
+
+		it "can access the list of reservations for a specific date" do
+			expect(@front_desk.reservations.length).must_equal 3 # ensure that the method isn't just returning the @reservations array
+			expect(@selected_reservations.length).must_equal 2
+			expect(@selected_reservations.first).must_equal @reservation1
+			expect(@selected_reservations.last).must_equal @reservation2
 		end
 	end
 end

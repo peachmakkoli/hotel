@@ -28,7 +28,8 @@ module Hotel
 			return @reservations.select { |reservation| reservation.room == room && reservation.date_range.include?(start_date) && reservation.date_range.include?(end_date) } 
 		end
 
-		# I can access the list of reservations for a specific date, so that I can track reservations by date
-
+		def reservations_by_date(date)
+			return @reservations.select { |reservation| reservation.start_date == date }
+		end
 	end
 end
