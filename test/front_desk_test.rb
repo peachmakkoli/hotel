@@ -16,6 +16,11 @@ describe "FrontDesk class" do
 			expect(rooms.first).must_equal 1
 			expect(rooms.last).must_equal 20
 		end
+
+		it "can access the list of all reservations" do
+			reservations = @front_desk.reservations
+			expect(reservations).must_be_kind_of Array
+		end
 	end
 
 	describe "#add_reservation" do
@@ -147,5 +152,9 @@ describe "FrontDesk class" do
 			expect(@selected_reservations.first).must_equal @reservation1
 			expect(@selected_reservations.last).must_equal @reservation2
 		end
+	end
+
+	describe "#" do
+
 	end
 end
