@@ -23,10 +23,17 @@ describe "Reservation class" do
 				end_date: Date.new(2020,3,2)
 			) }.must_raise ArgumentError
 		end
-	end
 
-	describe "Reservation property" do
-		
+		it "is set up for specific attributes and data types" do
+      [:id, :room, :start_date, :end_date].each do |attribute|
+        expect(@reservation).must_respond_to attribute
+      end
+
+      expect(@reservation.id).must_be_kind_of Integer
+      expect(@reservation.room).must_be_kind_of Integer
+      expect(@reservation.start_date).must_be_kind_of Date
+      expect(@reservation.end_date).must_be_kind_of Date
+    end
 	end
 
 	describe "#date_range" do
