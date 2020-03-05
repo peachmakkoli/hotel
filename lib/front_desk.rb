@@ -33,6 +33,9 @@ module Hotel
 		end
 
 		# I can view a list of rooms that are not reserved for a given date range, so that I can see all available rooms for that day
+		def find_available_room(range_start, range_end)
+
+		end
 
 		# I can make a reservation of a room for a given date range, and that room will not be part of any other reservation overlapping that date range
 

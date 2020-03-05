@@ -161,7 +161,47 @@ describe "FrontDesk class" do
 		end
 	end
 
-	describe "#" do
+	describe "#find_available_room" do
+		before do
+			@reservation1 = Hotel::Reservation.new(
+				id: 1,
+				room: 15,
+				start_date: Date.new(2020,2,27),
+				end_date: Date.new(2020,3,2)
+			)
+			@reservation2 = Hotel::Reservation.new(
+				id: 2,
+				room: 20,
+				start_date: Date.new(2020,3,1),
+				end_date: Date.new(2020,3,4)
+			)
+			@reservation3 = Hotel::Reservation.new(
+				id: 3,
+				room: 3,
+				start_date: Date.new(2020,3,5),
+				end_date: Date.new(2020,3,10)
+			)
+			@front_desk.add_reservation(@reservation1)
+			@front_desk.add_reservation(@reservation2)
+			@front_desk.add_reservation(@reservation3)
+			
+			range_start = Date.new(2020,3,2)
+			range_end = Date.new(2020,3,5)
+			@available_rooms = @front_desk.find_available_room(range_start, range_end)
+		end
 
+		it "returns an array of valid room numbers" do
+			expect(@available_rooms).must_be_kind_of Array
+			expect(@available_rooms.first).must_be_kind_of Integer
+			expect(@front_desk.rooms).must_include @available_rooms.first
+			expect(@front_desk.rooms).must_include @available_rooms.last
+		end
+
+		it "can view a list of rooms that are not reserved for a given date range" do
+			expect(@front_desk.reservations.length).must_equal 3 # ensure that the method isn't just returning the @reservations array
+			expect(@available_rooms.length).must_equal 2
+			expect(@available_rooms.first).must_equal 15
+			expect(@available_rooms.last).must_equal 3
+		end
 	end
 end
