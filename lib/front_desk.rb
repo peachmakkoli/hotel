@@ -14,13 +14,17 @@ module Hotel
 		end
 
 		def reserve_room(start_date, end_date)
+			available_rooms = find_available_room(start_date, end_date)
+			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
+			
 			new_reservation = Hotel::Reservation.new(
 				id: @reservations.length + 1,
-				room: @rooms.sample, # placeholder
+				room: available_rooms.first,
 				start_date: start_date,
 				end_date: end_date
 			)
 			add_reservation(new_reservation)
+			
 			return new_reservation
 		end
 
@@ -40,12 +44,9 @@ module Hotel
 		def find_available_room(range_start, range_end)
 			return @rooms if @reservations == []
 
-			@reservations.each { |reservation| @rooms.delete(reservation.room) if reservation.overlap?(range_start, range_end) }
-			return @rooms
+			available_rooms = @rooms.dup
+			@reservations.each { |reservation| available_rooms.delete(reservation.room) if reservation.overlap?(range_start, range_end) }
+			return available_rooms
 		end
-
-		# I can make a reservation of a room for a given date range, and that room will not be part of any other reservation overlapping that date range
-
-		# I want an exception raised if I try to reserve a room during a date range when all rooms are reserved, so that I cannot make two reservations for the same room that overlap by date
 	end
 end
