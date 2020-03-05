@@ -181,9 +181,16 @@ describe "FrontDesk class" do
 				start_date: Date.new(2020,3,5),
 				end_date: Date.new(2020,3,10)
 			)
+			@reservation4 = Hotel::Reservation.new(
+				id: 2,
+				room: 9,
+				start_date: Date.new(2020,3,4),
+				end_date: Date.new(2020,3,10)
+			)
 			@front_desk.add_reservation(@reservation1)
 			@front_desk.add_reservation(@reservation2)
 			@front_desk.add_reservation(@reservation3)
+			@front_desk.add_reservation(@reservation4)
 			
 			range_start = Date.new(2020,3,2)
 			range_end = Date.new(2020,3,5)
@@ -197,11 +204,16 @@ describe "FrontDesk class" do
 			expect(@front_desk.rooms).must_include @available_rooms.last
 		end
 
-		it "can view a list of rooms that are not reserved for a given date range" do
-			expect(@front_desk.reservations.length).must_equal 3 # ensure that the method isn't just returning the @reservations array
-			expect(@available_rooms.length).must_equal 2
-			expect(@available_rooms.first).must_equal 15
-			expect(@available_rooms.last).must_equal 3
+		it "returns a list of rooms that are not reserved for a given date range" do
+			expect(@available_rooms.length).must_equal 18
+			expect(@available_rooms).must_include 15
+			expect(@available_rooms).must_include 3
+		end
+
+		it "returns all rooms if there are no Reservations" do
+			@front_desk.reservations.clear
+			expect(@front_desk.reservations.length).must_equal 0 
+			expect(@available_rooms).must_equal @front_desk.rooms
 		end
 	end
 end
