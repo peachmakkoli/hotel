@@ -46,11 +46,17 @@ describe "FrontDesk class" do
 			end_date = Date.new(2020,3,5)
 			@reservation1 = @front_desk.reserve_room(start_date, end_date)
 			@reservation2 = @front_desk.reserve_room(start_date + 5, end_date + 5)
-			@reservation3 = @front_desk.reserve_room(start_date + 5, end_date + 5)
+			@reservation3 = @front_desk.reserve_room(start_date + 10, end_date + 10)
 		end
 
 		it "can reserve a room given a start date and an end date" do
 			expect(@reservation1).must_be_kind_of Hotel::Reservation
+		end
+
+		it "throws an exception if there are no rooms available" do
+			@front_desk.rooms.clear
+			expect(@front_desk.rooms.length).must_equal 0 
+			expect{@front_desk.reserve_room(Date.new(2020,3,2), Date.new(2020,3,5))}.must_raise ArgumentError
 		end
 
 		it "assigns a unique id number to each Reservation" do
@@ -103,9 +109,7 @@ describe "FrontDesk class" do
 			@front_desk.add_reservation(@reservation3)
 			@front_desk.add_reservation(@reservation4)
 
-			range_start = Date.new(2020,3,2)
-			range_end = Date.new(2020,3,5)
-			@selected_reservations = @front_desk.reservations_by_room(15, range_start, range_end)
+			@selected_reservations = @front_desk.reservations_by_room(15, Date.new(2020,3,2), Date.new(2020,3,5))
 		end
 
 		it "returns an array of Reservations" do
@@ -192,9 +196,7 @@ describe "FrontDesk class" do
 			@front_desk.add_reservation(@reservation3)
 			@front_desk.add_reservation(@reservation4)
 			
-			range_start = Date.new(2020,3,2)
-			range_end = Date.new(2020,3,5)
-			@available_rooms = @front_desk.find_available_room(range_start, range_end)
+			@available_rooms = @front_desk.find_available_room(Date.new(2020,3,2), Date.new(2020,3,5))
 		end
 
 		it "returns an array of valid room numbers" do
@@ -212,8 +214,9 @@ describe "FrontDesk class" do
 
 		it "returns all rooms if there are no Reservations" do
 			@front_desk.reservations.clear
+			available_rooms = @front_desk.find_available_room(Date.new(2020,3,2), Date.new(2020,3,5))
 			expect(@front_desk.reservations.length).must_equal 0 
-			expect(@available_rooms).must_equal @front_desk.rooms
+			expect(available_rooms).must_equal @front_desk.rooms
 		end
 	end
 end
