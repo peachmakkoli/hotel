@@ -24,13 +24,12 @@ module Hotel
 			return new_reservation
 		end
 
-		def reservations_by_room(room, start_date, end_date)
-			# return @reservations.select { |reservation| reservation.room == room && reservation.date_range.include?(start_date) || reservation.date_range.include?(end_date) }
-			return @reservations.select { |reservation| reservation.room == room && reservation.start_date >= start_date && reservation.start_date <= end_date }
+		def reservations_by_room(room, range_start, range_end)
+			return @reservations.select { |reservation| reservation.room == room && reservation.start_date <= range_end && reservation.end_date >= range_start }
 		end
 
 		def reservations_by_date(date)
-			return @reservations.select { |reservation| reservation.start_date == date }
+			return @reservations.select { |reservation| reservation.date_range.include?(date) }
 		end
 
 		# I can view a list of rooms that are not reserved for a given date range, so that I can see all available rooms for that day

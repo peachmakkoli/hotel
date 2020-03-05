@@ -92,13 +92,20 @@ describe "FrontDesk class" do
 				start_date: Date.new(2020,3,5),
 				end_date: Date.new(2020,3,10)
 			)
+			@reservation4 = Hotel::Reservation.new(
+				id: 3,
+				room: 15,
+				start_date: Date.new(2020,3,1),
+				end_date: Date.new(2020,3,2)
+			)
 			@front_desk.add_reservation(@reservation1)
 			@front_desk.add_reservation(@reservation2)
 			@front_desk.add_reservation(@reservation3)
+			@front_desk.add_reservation(@reservation4)
 
-			start_date = Date.new(2020,3,2)
-			end_date = Date.new(2020,3,5)
-			@selected_reservations = @front_desk.reservations_by_room(15, start_date, end_date)
+			range_start = Date.new(2020,3,2)
+			range_end = Date.new(2020,3,5)
+			@selected_reservations = @front_desk.reservations_by_room(15, range_start, range_end)
 		end
 
 		it "returns an array of Reservations" do
@@ -107,10 +114,10 @@ describe "FrontDesk class" do
 		end
 
 		it "can access the list of reservations for a specified room and a given date range" do
-			expect(@front_desk.reservations.length).must_equal 3 # ensure that the method isn't just returning the @reservations array
-			expect(@selected_reservations.length).must_equal 2
+			expect(@front_desk.reservations.length).must_equal 4 # ensure that the method isn't just returning the @reservations array
+			expect(@selected_reservations.length).must_equal 3
 			expect(@selected_reservations.first).must_equal @reservation1
-			expect(@selected_reservations.last).must_equal @reservation3
+			expect(@selected_reservations.last).must_equal @reservation4
 		end
 	end
 
@@ -125,7 +132,7 @@ describe "FrontDesk class" do
 			@reservation2 = Hotel::Reservation.new(
 				id: 2,
 				room: 20,
-				start_date: Date.new(2020,3,2),
+				start_date: Date.new(2020,3,1),
 				end_date: Date.new(2020,3,4)
 			)
 			@reservation3 = Hotel::Reservation.new(
