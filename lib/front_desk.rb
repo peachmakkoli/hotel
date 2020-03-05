@@ -42,8 +42,6 @@ module Hotel
 		end
 
 		def find_available_room(range_start, range_end)
-			return @rooms if @reservations == []
-
 			available_rooms = @rooms.dup
 			@reservations.each { |reservation| available_rooms.delete(reservation.room) if reservation.overlap?(range_start, range_end) }
 			return available_rooms
