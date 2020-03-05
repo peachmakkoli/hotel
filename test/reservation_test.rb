@@ -87,6 +87,13 @@ describe "Reservation class" do
 			range_end = @end_date + 3
 			expect(@reservation.overlap?(range_start, range_end)).must_equal false
 		end
+
+		# check-outs can happen on the same day as a new check-in
+		it "ignores reservations whose end_date is equal to the start_date in the range" do
+			range_start = @start_date - 3
+			range_end = @end_date - 3
+			expect(@reservation.overlap?(range_start, range_end)).must_equal false
+		end
 	end
 
 	describe "#total_cost" do
