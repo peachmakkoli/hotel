@@ -65,26 +65,26 @@ describe "Reservation class" do
 
 		it "returns false when start_date and end_date are both outside the range" do
 			range_start = @start_date + 8
-			range_end = @start_date + 8
+			range_end = @end_date + 8
 			expect(@reservation.overlap?(range_start, range_end)).must_equal false
 		end
 
 		it "returns true when start_date is within the range but end_date is outside the range" do
 			range_start = @start_date + 1
-			range_end = @start_date + 1
+			range_end = @end_date + 1
 			expect(@reservation.overlap?(range_start, range_end)).must_equal true
 		end
 
 		it "returns true when the start_date is outside the range but end_date is within the range" do
 			range_start = @start_date - 1
-			range_end = @start_date - 1
+			range_end = @end_date - 1
 			expect(@reservation.overlap?(range_start, range_end)).must_equal true
 		end
 		
 		# new check-ins can happen on the same day as check-outs
 		it "ignores reservations whose start_date is equal to the end_date in the range" do
 			range_start = @start_date + 3
-			range_end = @start_date + 3
+			range_end = @end_date + 3
 			expect(@reservation.overlap?(range_start, range_end)).must_equal false
 		end
 	end
