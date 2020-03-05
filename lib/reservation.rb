@@ -22,6 +22,10 @@ module Hotel
 			return @end_date - @start_date
 		end
 
+		def overlap?(range_start, range_end)
+			return @start_date < range_end && @end_date > range_start
+		end		
+
 		def total_cost
 			return nights * 200.0
 		end
