@@ -24,17 +24,24 @@ module Hotel
 			return new_reservation
 		end
 
+		# use less than/greater than instead of include? method to lower complexity
 		def reservations_by_room(room, range_start, range_end)
-			return @reservations.select { |reservation| reservation.room == room && reservation.start_date <= range_end && reservation.end_date >= range_start }
+			return @reservations.select { |reservation| 
+				reservation.room == room && reservation.start_date <= range_end && reservation.end_date >= range_start 
+			}
 		end
 
 		def reservations_by_date(date)
-			return @reservations.select { |reservation| reservation.date_range.include?(date) }
+			return @reservations.select { |reservation| 
+				reservation.date_range.include?(date) 
+			}
 		end
 
-		# I can view a list of rooms that are not reserved for a given date range, so that I can see all available rooms for that day
 		def find_available_room(range_start, range_end)
+			return @rooms if @reservations == []
 
+			@reservations.each { |reservation| @rooms.delete(reservation.room) if reservation.overlap?(range_start, range_end) }
+			return @rooms
 		end
 
 		# I can make a reservation of a room for a given date range, and that room will not be part of any other reservation overlapping that date range
