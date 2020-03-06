@@ -10,16 +10,17 @@ describe "DateRange class" do
 
 	describe "DateRange instantiation" do
 		it "is an instance of DateRange" do
-			expect(@reservation).must_be_kind_of Hotel::Reservation
+			expect(@date_range).must_be_kind_of Hotel::DateRange
 		end
 
 		it "is set up for specific attributes and data types" do
-      [:start_date, :end_date].each do |attribute|
-        expect(@reservation).must_respond_to attribute
+      [:start_date, :end_date, :dates].each do |attribute|
+        expect(@date_range).must_respond_to attribute
       end
 
-      expect(@reservation.start_date).must_be_kind_of Date
-      expect(@reservation.end_date).must_be_kind_of Date
+      expect(@date_range.start_date).must_be_kind_of Date
+			expect(@date_range.end_date).must_be_kind_of Date
+			expect(@date_range.dates).must_be_kind_of Range
 		end
 		
 		it "throws an exception when an invalid date range is provided" do
@@ -29,4 +30,11 @@ describe "DateRange class" do
 			) }.must_raise ArgumentError
 		end
 	end
+
+	describe "#nights" do
+		it "calculates the nights of stay accurately" do
+			expect(@date_range.nights).must_equal 3
+		end
+	end
+end
 	
