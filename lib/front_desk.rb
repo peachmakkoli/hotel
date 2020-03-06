@@ -45,6 +45,9 @@ module Hotel
 			available_rooms = @rooms.dup
 			@reservations.each { |reservation| available_rooms.delete(reservation.room) if reservation.overlap?(range_start, range_end) }
 			return available_rooms
+			# if a room class is added, this method can be simplified in terms of space complexity
+			# return @rooms if @reservations = []
+			# return @rooms.map { |room| room.num unless room.reservations.overlap?(range_start, range_end) }
 		end
 	end
 end
