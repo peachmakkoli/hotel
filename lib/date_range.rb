@@ -1,5 +1,5 @@
 module Hotel
-	class DateRange < Range
+	class DateRange
 		attr_accessor :start_date, :end_date
 
 		def initialize(start_date:, end_date:)
@@ -16,5 +16,9 @@ module Hotel
 		def overlap?(other)
 			return @start_date < other.end_date && @end_date > other.start_date
 		end		
+
+		def include?(date)
+			return (@start_date..@end_date).include?(date)
+		end
 	end
 end

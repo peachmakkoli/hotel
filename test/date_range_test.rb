@@ -80,5 +80,17 @@ describe "DateRange class" do
 			expect(@date_range.overlap?(@date_range2)).must_equal false
 		end
 	end
+
+	describe "#include?" do
+		it "returns true when the date given is within the range" do
+			date = Date.new(2020,3,3)
+			expect(@date_range.include?(date)).must_equal true
+		end
+
+		it "returns false when the date given is outside the range" do
+			date = Date.new(2020,3,10)
+			expect(@date_range.include?(date)).must_equal false
+		end
+	end
 end
 	
