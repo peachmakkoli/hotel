@@ -14,13 +14,12 @@ describe "DateRange class" do
 		end
 
 		it "is set up for specific attributes and data types" do
-      [:start_date, :end_date, :dates].each do |attribute|
+      [:start_date, :end_date].each do |attribute|
         expect(@date_range).must_respond_to attribute
       end
 
       expect(@date_range.start_date).must_be_kind_of Date
 			expect(@date_range.end_date).must_be_kind_of Date
-			expect(@date_range.dates).must_be_kind_of Range
 		end
 		
 		it "throws an exception when an invalid date range is provided" do
