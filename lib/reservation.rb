@@ -1,33 +1,21 @@
 require 'date'
+require_relative 'date_range'
 
 module Hotel
 	class Reservation
-		attr_reader :id, :room
-		attr_accessor :start_date, :end_date
+		attr_reader :id, :room, :date_range
 
 		def initialize(id:, room:, start_date:, end_date:)
 			@id = id
 			@room = room
-			@start_date = start_date
-			@end_date = end_date
-			
-			raise ArgumentError.new("Invalid date range!") if @start_date > @end_date
+			@date_range = Hotel::DateRange.new(
+				start_date: start_date, 
+				end_date: end_date
+			)
 		end	
-	
-		def date_range
-			return (@start_date..@end_date).to_a
-		end
-
-		def nights
-			return @end_date - @start_date
-		end
-
-		def overlap?(range_start, range_end)
-			return @start_date < range_end && @end_date > range_start
-		end		
 
 		def total_cost
-			return nights * 200.0
+			return @date_range.nights * 200.0 # this needs to be changed to account for the discounted rate in hotel blocks
 		end
 	end
 end

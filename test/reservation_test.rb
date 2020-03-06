@@ -15,97 +15,25 @@ describe "Reservation class" do
 			expect(@reservation).must_be_kind_of Hotel::Reservation
 		end
 
-		it "throws an exception when an invalid date range is provided" do
-			expect{ Hotel::Reservation.new(
-				id: 1,
-				room: 15,
-				start_date: Date.new(2020,3,5),
-				end_date: Date.new(2020,3,2)
-			) }.must_raise ArgumentError
-		end
-
 		it "is set up for specific attributes and data types" do
-      [:id, :room, :start_date, :end_date].each do |attribute|
+      [:id, :room, :date_range].each do |attribute|
         expect(@reservation).must_respond_to attribute
       end
 
       expect(@reservation.id).must_be_kind_of Integer
       expect(@reservation.room).must_be_kind_of Integer
-      expect(@reservation.start_date).must_be_kind_of Date
-      expect(@reservation.end_date).must_be_kind_of Date
+			expect(@reservation.date_range).must_be_kind_of Hotel::DateRange
     end
 	end
 
-	describe "#date_range" do
-		before do
-			@range = @reservation.date_range
-		end
-
-		it "returns an array with the correct length and start/end values" do
-			expect(@range).must_be_kind_of Array
-			expect(@range.length).must_equal 4
-			expect(@range.first).must_equal @reservation.start_date
-			expect(@range.last).must_equal @reservation.end_date
-		end		
-
-		it "returns all dates between the start and end dates" do
-			expect(@range[1]).must_equal @reservation.start_date + 1
-			expect(@range[2]).must_equal @reservation.start_date + 2
-		end		
-	end
-
-	describe "#nights" do
-		it "calculates the nights of stay accurately" do
-			expect(@reservation.nights).must_equal 3
-		end
-	end
-
-	describe "#overlap?" do
-		before do
-			@start_date = Date.new(2020,3,2)
-			@end_date = Date.new(2020,3,5)
-		end
-
-		it "returns true when start_date and end_date are both within the range" do
-			expect(@reservation.overlap?(@start_date, @end_date)).must_equal true
-		end
-
-		it "returns false when start_date and end_date are both outside the range" do
-			range_start = @start_date + 8
-			range_end = @end_date + 8
-			expect(@reservation.overlap?(range_start, range_end)).must_equal false
-		end
-
-		it "returns true when start_date is within the range but end_date is outside the range" do
-			range_start = @start_date + 1
-			range_end = @end_date + 1
-			expect(@reservation.overlap?(range_start, range_end)).must_equal true
-		end
-
-		it "returns true when the start_date is outside the range but end_date is within the range" do
-			range_start = @start_date - 1
-			range_end = @end_date - 1
-			expect(@reservation.overlap?(range_start, range_end)).must_equal true
-		end
-		
-		# new check-ins can happen on the same day as check-outs
-		it "ignores reservations whose start_date is equal to the end_date in the range" do
-			range_start = @start_date + 3
-			range_end = @end_date + 3
-			expect(@reservation.overlap?(range_start, range_end)).must_equal false
-		end
-
-		# check-outs can happen on the same day as a new check-in
-		it "ignores reservations whose end_date is equal to the start_date in the range" do
-			range_start = @start_date - 3
-			range_end = @end_date - 3
-			expect(@reservation.overlap?(range_start, range_end)).must_equal false
-		end
-	end
-
 	describe "#total_cost" do
-		it "calculates the total cost accurately" do
+		it "accurately calculates the total cost for single rooms" do
 			expect(@reservation.total_cost).must_equal 600.0
+		end
+
+		it "accurately calculates the total cost for hotel blocks" do
+			# @ block = Hotel::Block.new()
+			# expect(@reservation.total_cost).must_equal 
 		end
 	end
 end
