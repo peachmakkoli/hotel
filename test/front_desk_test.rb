@@ -99,7 +99,7 @@ describe "FrontDesk class" do
 				end_date: Date.new(2020,3,10)
 			)
 			@reservation4 = Hotel::Reservation.new(
-				id: 3,
+				id: 4,
 				room: 15,
 				start_date: Date.new(2020,3,1),
 				end_date: Date.new(2020,3,2)
@@ -186,7 +186,7 @@ describe "FrontDesk class" do
 				end_date: Date.new(2020,3,10)
 			)
 			@reservation4 = Hotel::Reservation.new(
-				id: 2,
+				id: 4,
 				room: 9,
 				start_date: Date.new(2020,3,4),
 				end_date: Date.new(2020,3,10)
