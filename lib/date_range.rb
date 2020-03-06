@@ -14,5 +14,9 @@ module Hotel
 		def nights
 			return @end_date - @start_date
 		end
+
+		def overlap?(other)
+			return @start_date < other.end_date && @end_date > other.start_date
+		end		
 	end
 end
