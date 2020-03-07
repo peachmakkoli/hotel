@@ -28,10 +28,9 @@ module Hotel
 			return new_reservation
 		end
 
-		# use less than/greater than instead of include? method to lower complexity
-		def reservations_by_room(room, range_start, range_end)
+		def reservations_by_room(room, date_range)
 			return @reservations.select { |reservation| 
-				reservation.room == room && reservation.start_date <= range_end && reservation.end_date >= range_start 
+				reservation.room == room && reservation.date_range.overlap?(date_range)
 			}
 		end
 

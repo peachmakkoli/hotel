@@ -54,9 +54,11 @@ describe "FrontDesk class" do
 		end
 
 		it "throws an exception if there are no rooms available" do
+			start_date = Date.new(2020,3,2)
+			end_date = Date.new(2020,3,5)
 			@front_desk.rooms.clear
 			expect(@front_desk.rooms.length).must_equal 0 
-			expect{@front_desk.reserve_room(Date.new(2020,3,2), Date.new(2020,3,5))}.must_raise ArgumentError
+			expect{@front_desk.reserve_room(start_date, )}.must_raise ArgumentError
 		end
 
 		it "assigns a unique id number to each Reservation" do
@@ -102,14 +104,18 @@ describe "FrontDesk class" do
 				id: 4,
 				room: 15,
 				start_date: Date.new(2020,3,1),
-				end_date: Date.new(2020,3,2)
+				end_date: Date.new(2020,3,3)
 			)
 			@front_desk.add_reservation(@reservation1)
 			@front_desk.add_reservation(@reservation2)
 			@front_desk.add_reservation(@reservation3)
 			@front_desk.add_reservation(@reservation4)
 
-			@selected_reservations = @front_desk.reservations_by_room(15, Date.new(2020,3,2), Date.new(2020,3,5))
+			date_range = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			@selected_reservations = @front_desk.reservations_by_room(15, date_range)
 		end
 
 		it "returns an array of Reservations" do
@@ -119,7 +125,7 @@ describe "FrontDesk class" do
 
 		it "can access the list of reservations for a specified room and a given date range" do
 			expect(@front_desk.reservations.length).must_equal 4 # ensure that the method isn't just returning the @reservations array
-			expect(@selected_reservations.length).must_equal 3
+			expect(@selected_reservations.length).must_equal 2
 			expect(@selected_reservations.first).must_equal @reservation1
 			expect(@selected_reservations.last).must_equal @reservation4
 		end
