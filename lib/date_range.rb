@@ -10,7 +10,7 @@ module Hotel
 		end
 
 		def nights
-			return @end_date - @start_date
+			return (@end_date - @start_date).to_i
 		end
 
 		def overlap?(other)
@@ -27,6 +27,7 @@ module Hotel
 				yield @start_date + index
 				index += 1
 			end
+			# return (@start_date..@end_date).each
 		end
 	end
 end

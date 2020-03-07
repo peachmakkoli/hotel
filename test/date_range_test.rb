@@ -31,6 +31,10 @@ describe "DateRange class" do
 	end
 
 	describe "#nights" do
+		it "returns an Integer" do
+			expect(@date_range.nights).must_be_kind_of Integer
+		end
+
 		it "calculates the nights of stay accurately" do
 			expect(@date_range.nights).must_equal 3
 		end
@@ -82,6 +86,16 @@ describe "DateRange class" do
 	end
 
 	describe "#include?" do
+		it "returns true when the date given is at the start of the range" do
+			date = Date.new(2020,3,2)
+			expect(@date_range.include?(date)).must_equal true
+		end
+
+		it "returns true when the date given is at the end of the range" do
+			date = Date.new(2020,3,5)
+			expect(@date_range.include?(date)).must_equal true
+		end
+
 		it "returns true when the date given is within the range" do
 			date = Date.new(2020,3,3)
 			expect(@date_range.include?(date)).must_equal true
