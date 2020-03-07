@@ -18,7 +18,23 @@ module Hotel
 		end		
 
 		def include?(date)
-			return (@start_date..@end_date).include?(date)
+			low = 0
+			high = self.nights
+			
+			return true if @start_date == date || @end_date == date
+
+			while low <= high
+				mid = (low + high) / 2
+				if (@start_date + mid) == date
+					return true
+				elsif (@start_date + mid) > date
+					high = mid - 1
+				elsif (@start_date + mid) < date
+					low = mid + 1
+				end
+			end
+		
+			return false
 		end
 
 		def each
