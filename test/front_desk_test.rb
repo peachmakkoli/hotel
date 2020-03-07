@@ -116,7 +116,7 @@ describe "FrontDesk class" do
 				id: 4,
 				room: 15,
 				start_date: Date.new(2020,3,1),
-				end_date: Date.new(2020,3,3)
+				end_date: Date.new(2020,3,2)
 			)
 			@front_desk.add_reservation(@reservation1)
 			@front_desk.add_reservation(@reservation2)
@@ -137,7 +137,7 @@ describe "FrontDesk class" do
 
 		it "can access the list of reservations for a specified room and a given date range" do
 			expect(@front_desk.reservations.length).must_equal 4 # ensure that the method isn't just returning the @reservations array
-			expect(@selected_reservations.length).must_equal 2
+			expect(@selected_reservations.length).must_equal 3
 			expect(@selected_reservations.first).must_equal @reservation1
 			expect(@selected_reservations.last).must_equal @reservation4
 		end

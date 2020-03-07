@@ -31,7 +31,7 @@ module Hotel
 
 		def reservations_by_room(room, date_range)
 			return @reservations.select { |reservation| 
-				reservation.room == room && reservation.date_range.overlap?(date_range)
+				reservation.room == room && date_range.each { |date| reservation.date_range.include?(date) }
 			}
 		end
 
@@ -39,6 +39,7 @@ module Hotel
 			return @reservations.select { |reservation| 
 				reservation.date_range.include?(date) 
 			}
+			# Wave 3: I can see a reservation made from a hotel block from the list of reservations for that date (see wave 1 requirements)
 		end
 
 		def find_available_room(date_range)
@@ -49,6 +50,8 @@ module Hotel
 			# if a room class is added, this method can be simplified in terms of space complexity
 			# return @rooms if @reservations == []
 			# return @rooms.select { |room| room.num unless room.reservations.each { |reservation| reservation.date_range.overlap?(date_range) }
+
+			# Wave 3: Given a specific date, and that a room is set aside in a hotel block for that specific date, I cannot reserve that specific room for that specific date, because it is unavailable
 		end
 	end
 end
