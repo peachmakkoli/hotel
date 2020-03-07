@@ -94,7 +94,7 @@ describe "DateRange class" do
 			expect(@date_range.include?(date)).must_equal true
 		end
 
-		it "returns true when the date given is within the range" do
+		it "returns true when the date given is in the middle of the range" do
 			date = Date.new(2020,3,3)
 			expect(@date_range.include?(date)).must_equal true
 		end
