@@ -20,5 +20,13 @@ module Hotel
 		def include?(date)
 			return (@start_date..@end_date).include?(date)
 		end
+
+		def each
+			index = 0
+			while index <= self.nights
+				yield @start_date + index
+				index += 1
+			end
+		end
 	end
 end

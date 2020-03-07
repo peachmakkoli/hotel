@@ -92,5 +92,15 @@ describe "DateRange class" do
 			expect(@date_range.include?(date)).must_equal false
 		end
 	end
+
+	describe "#each" do
+		it "iterates through each Date in the range" do
+			dates = []
+			@date_range.each { |date| dates << date }
+			expect(dates.length).must_equal 4
+			expect(dates.first).must_equal Date.new(2020,3,2)
+			expect(dates.last).must_equal Date.new(2020,3,5)
+		end
+	end
 end
 	
