@@ -16,13 +16,12 @@ describe "Reservation class" do
 		end
 
 		it "is set up for specific attributes and data types" do
-      [:id, :room, :block, :date_range].each do |attribute|
+      [:id, :room, :date_range].each do |attribute|
         expect(@reservation).must_respond_to attribute
       end
 
       expect(@reservation.id).must_be_kind_of Integer
 			expect(@reservation.room).must_be_kind_of Integer
-			expect(@reservation.block).must_equal false
 			expect(@reservation.date_range).must_be_kind_of Hotel::DateRange
     end
 	end
@@ -30,11 +29,6 @@ describe "Reservation class" do
 	describe "#total_cost" do
 		it "accurately calculates the total cost for single rooms" do
 			expect(@reservation.total_cost).must_equal 600.0
-		end
-
-		it "accurately calculates the total cost for hotel blocks" do
-			# @ block = Hotel::Block.new()
-			# expect(@reservation.total_cost).must_equal 
 		end
 	end
 end
