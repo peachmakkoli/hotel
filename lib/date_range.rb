@@ -20,8 +20,6 @@ module Hotel
 		def include?(date)
 			low = 0
 			high = self.nights
-			
-			return true if @start_date == date || @end_date == date
 
 			while low <= high
 				mid = (low + high) / 2
