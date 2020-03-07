@@ -14,7 +14,7 @@ module Hotel
 		end
 
 		def overlap?(other)
-			return @start_date < other.end_date && @end_date > other.start_date
+			return @start_date <= other.end_date && @end_date >= other.start_date
 		end		
 
 		def include?(date)
@@ -35,15 +35,6 @@ module Hotel
 			end
 		
 			return false
-		end
-
-		def each
-			index = 0
-			while index <= self.nights
-				yield @start_date + index
-				index += 1
-			end
-			# return (@start_date..@end_date).each
 		end
 	end
 end
