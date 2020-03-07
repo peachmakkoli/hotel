@@ -15,6 +15,7 @@ module Hotel
 		end
 
 		def reserve_room(date_range)
+			# Wave 3: All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
 			available_rooms = find_available_room(date_range)
 			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			
@@ -28,7 +29,7 @@ module Hotel
 			
 			return new_reservation
 		end
-
+		
 		def reservations_by_room(room, date_range)
 			return @reservations.select { |reservation| 
 				reservation.room == room && reservation.date_range.overlap?(date_range)
