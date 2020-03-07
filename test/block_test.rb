@@ -2,9 +2,8 @@ require_relative 'test_helper'
 
 describe "Block class" do
 	before do 
-		rooms = (1..5).to_a
 		@block = Hotel::Block.new(
-			rooms: rooms,
+			rooms: (1..5).to_a,
 			rate: 150.0,
 			start_date: Date.new(2020,3,2),
 			end_date: Date.new(2020,3,5)
@@ -25,5 +24,23 @@ describe "Block class" do
 			expect(@block.rate).must_be_kind_of Float
 			expect(@block.date_range).must_be_kind_of Hotel::DateRange
     end
+		
+		it "throws an exception if the list of rooms is greater than 5" do
+			expect{ Hotel::Block.new(
+				rooms: (1..6).to_a,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			) }.must_raise ArgumentError
+		end
+
+		it "throws an exception if the list of rooms is less than 2" do
+			expect{ Hotel::Block.new(
+				rooms: [1],
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			) }.must_raise ArgumentError
+		end
 	end
 end

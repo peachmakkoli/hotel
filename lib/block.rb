@@ -11,11 +11,9 @@ module Hotel
 				start_date: start_date, 
 				end_date: end_date
 			)
-
-			# Wave 3: I want an exception raised if I try to create a Hotel Block and at least one of the rooms is unavailable for the given date range
 			
 			# Wave 3: A block can contain a maximum of 5 rooms
-
+			raise ArgumentError.new("Block must contain between 2 and 5 rooms!") if @rooms.length < 2 || @rooms.length > 5
 			# Wave 3: When a room is reserved from a block of rooms, the reservation dates will always match the date range of the block
 		end
 
