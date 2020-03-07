@@ -70,18 +70,16 @@ describe "DateRange class" do
 			expect(@date_range.overlap?(@date_range2)).must_equal true
 		end
 		
-		# new check-ins can happen on the same day as check-outs
-		it "ignores reservations whose start_date is equal to the end_date in the range" do
+		it "returns true when the start_date is equal to the end_date in the range" do
 			@date_range2.start_date += 3
 			@date_range2.end_date += 3
-			expect(@date_range.overlap?(@date_range2)).must_equal false
+			expect(@date_range.overlap?(@date_range2)).must_equal true
 		end
 
-		# check-outs can happen on the same day as a new check-in
-		it "ignores reservations whose end_date is equal to the start_date in the range" do
+		it "returns true when the end_date is equal to the start_date in the range" do
 			@date_range2.start_date -= 3
 			@date_range2.end_date -= 3
-			expect(@date_range.overlap?(@date_range2)).must_equal false
+			expect(@date_range.overlap?(@date_range2)).must_equal true
 		end
 	end
 
