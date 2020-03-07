@@ -40,9 +40,9 @@ module Hotel
 			}
 		end
 
-		def find_available_room(range_start, range_end)
+		def find_available_room(date_range)
 			available_rooms = @rooms.dup
-			@reservations.each { |reservation| available_rooms.delete(reservation.room) if reservation.overlap?(range_start, range_end) }
+			@reservations.each { |reservation| available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) }
 			return available_rooms
 			# if a room class is added, this method can be simplified in terms of space complexity
 			# return @rooms if @reservations = []

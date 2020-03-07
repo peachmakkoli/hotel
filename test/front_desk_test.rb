@@ -202,7 +202,11 @@ describe "FrontDesk class" do
 			@front_desk.add_reservation(@reservation3)
 			@front_desk.add_reservation(@reservation4)
 			
-			@available_rooms = @front_desk.find_available_room(Date.new(2020,3,2), Date.new(2020,3,5))
+			@date_range = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			@available_rooms = @front_desk.find_available_room(@date_range)
 		end
 
 		it "returns an array of valid room numbers" do
@@ -220,7 +224,7 @@ describe "FrontDesk class" do
 
 		it "returns all rooms if there are no Reservations" do
 			@front_desk.reservations.clear
-			available_rooms = @front_desk.find_available_room(Date.new(2020,3,2), Date.new(2020,3,5))
+			available_rooms = @front_desk.find_available_room(@date_range)
 			expect(@front_desk.reservations.length).must_equal 0 
 			expect(available_rooms).must_equal @front_desk.rooms
 		end
