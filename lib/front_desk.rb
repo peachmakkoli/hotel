@@ -31,7 +31,7 @@ module Hotel
 
 		def reservations_by_room(room, date_range)
 			return @reservations.select { |reservation| 
-				reservation.room == room && date_range.each { |date| reservation.date_range.include?(date) }
+				reservation.room == room && reservation.date_range.overlap?(date_range)
 			}
 		end
 
@@ -42,12 +42,15 @@ module Hotel
 			# Wave 3: I can see a reservation made from a hotel block from the list of reservations for that date (see wave 1 requirements)
 		end
 
+		# SPACE COMPLEXITY!!!
 		def find_available_room(date_range)
 			return @rooms if @reservations == []
 			available_rooms = @rooms.dup
-			@reservations.each { |reservation| available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) }
+			@reservations.each { |reservation| 
+				available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) && reservation.date_range.start_date != date_range.end_date && reservation.date_range.end_date != date_range.start_date 
+			}
 			return available_rooms
-			# if a room class is added, this method can be simplified in terms of space complexity
+			# if a room class is added, this method can be simplified
 			# return @rooms if @reservations == []
 			# return @rooms.select { |room| room.num unless room.reservations.each { |reservation| reservation.date_range.overlap?(date_range) }
 
