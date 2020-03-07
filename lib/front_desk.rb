@@ -1,4 +1,5 @@
 require_relative 'reservation'
+require_relative 'date_range'
 
 module Hotel
 	class FrontDesk
@@ -13,15 +14,15 @@ module Hotel
 			@reservations << reservation
 		end
 
-		def reserve_room(start_date, end_date)
-			available_rooms = find_available_room(start_date, end_date)
+		def reserve_room(date_range)
+			available_rooms = find_available_room(date_range)
 			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			
 			new_reservation = Hotel::Reservation.new(
 				id: @reservations.length + 1,
 				room: available_rooms.first,
-				start_date: start_date,
-				end_date: end_date
+				start_date: date_range.start_date,
+				end_date: date_range.end_date
 			)
 			add_reservation(new_reservation)
 			

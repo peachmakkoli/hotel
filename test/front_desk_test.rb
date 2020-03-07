@@ -42,11 +42,21 @@ describe "FrontDesk class" do
 
 	describe "#reserve_room" do
 		before do
-			start_date = Date.new(2020,3,2)
-			end_date = Date.new(2020,3,5)
-			@reservation1 = @front_desk.reserve_room(start_date, end_date)
-			@reservation2 = @front_desk.reserve_room(start_date + 5, end_date + 5)
-			@reservation3 = @front_desk.reserve_room(start_date + 10, end_date + 10)
+			date_range1 = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			date_range2 = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,7), 
+				end_date: Date.new(2020,3,10)
+			)
+			date_range3 = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,12), 
+				end_date: Date.new(2020,3,15)
+			)
+			@reservation1 = @front_desk.reserve_room(date_range1)
+			@reservation2 = @front_desk.reserve_room(date_range2)
+			@reservation3 = @front_desk.reserve_room(date_range3)
 		end
 
 		it "can reserve a room given a start date and an end date" do
@@ -54,11 +64,13 @@ describe "FrontDesk class" do
 		end
 
 		it "throws an exception if there are no rooms available" do
-			start_date = Date.new(2020,3,2)
-			end_date = Date.new(2020,3,5)
 			@front_desk.rooms.clear
+			date_range = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
 			expect(@front_desk.rooms.length).must_equal 0 
-			expect{@front_desk.reserve_room(start_date, )}.must_raise ArgumentError
+			expect{@front_desk.reserve_room(date_range)}.must_raise ArgumentError
 		end
 
 		it "assigns a unique id number to each Reservation" do
