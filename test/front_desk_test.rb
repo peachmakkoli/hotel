@@ -21,6 +21,11 @@ describe "FrontDesk class" do
 			reservations = @front_desk.reservations
 			expect(reservations).must_be_kind_of Array
 		end
+
+		it "can access the list of all blocks" do
+			blocks = @front_desk.blocks
+			expect(blocks).must_be_kind_of Array
+		end
 	end
 
 	describe "#add_reservation" do
@@ -158,6 +163,18 @@ describe "FrontDesk class" do
 			)
 			@front_desk.reserve_room(date_range)
 			expect{@front_desk.reserve_block(rooms, rate, date_range)}.must_raise ArgumentError
+		end
+
+		it "creates a reservation for each room in the Block" do
+			
+			# expect the list of reservations to be 5 in length
+			# expect the first in the list to have room 1
+			# expect the last in the list to have room 2
+		end
+
+		it "sets @block in each Reservation to the Block id" do
+			
+			# expect reservation.block to equal block.id
 		end
 	end
 

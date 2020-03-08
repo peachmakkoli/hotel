@@ -2,11 +2,12 @@ require_relative 'reservation'
 
 module Hotel
 	class FrontDesk
-		attr_reader :rooms, :reservations
+		attr_reader :rooms, :reservations, :blocks
 
 		def initialize
 			@rooms = (1..20).to_a
 			@reservations = []
+			@blocks = []
 		end
 
 		def add_reservation(reservation)
@@ -21,7 +22,6 @@ module Hotel
 				end_date: date_range.end_date
 			)
 			add_reservation(new_reservation)
-			
 			return new_reservation
 		end
 
@@ -29,11 +29,17 @@ module Hotel
 			rooms.each { |room| raise ArgumentError.new("At least one of the rooms is unavailable for the given date range!") if !reservations_by_room(room, date_range).empty? }
 			
 			new_block = Hotel::Block.new(
+				id: @blocks.length + 1,
 				rooms: rooms,
 				rate: rate,
 				start_date: date_range.start_date,
 				end_date: date_range.end_date
 			)
+
+			# length(rooms).times { 
+			# 	reservation = reserve_room(date_range) 
+			# 	reservation.block = new_block.id
+			# }
 			# Wave 3: All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
 
 			# Wave 3: Given a specific date, and that a room is set aside in a hotel block for that specific date, I cannot reserve that specific room for that specific date, because it is unavailable	
