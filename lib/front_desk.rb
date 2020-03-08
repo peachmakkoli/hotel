@@ -14,8 +14,6 @@ module Hotel
 		end
 
 		def reserve_room(date_range)
-			# Wave 3: All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
-			
 			new_reservation = Hotel::Reservation.new(
 				id: @reservations.length + 1,
 				room: find_available_room(date_range).first,
@@ -28,13 +26,17 @@ module Hotel
 		end
 
 		def reserve_block(rooms, rate, date_range)
+			rooms.each { |room| raise ArgumentError.new("At least one of the rooms is unavailable for the given date range!") if !reservations_by_room(room, date_range).empty? }
+			
 			new_block = Hotel::Block.new(
 				rooms: rooms,
 				rate: rate,
 				start_date: date_range.start_date,
 				end_date: date_range.end_date
 			)
-			# Wave 3: I want an exception raised if I try to create a Hotel Block and at least one of the rooms is unavailable for the given date range
+			# Wave 3: All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
+
+			# Wave 3: Given a specific date, and that a room is set aside in a hotel block for that specific date, I cannot reserve that specific room for that specific date, because it is unavailable	
 		end
 		
 		def reservations_by_room(room, date_range)
@@ -53,17 +55,13 @@ module Hotel
 		# SPACE COMPLEXITY!!!
 		def find_available_room(date_range)
 			return @rooms if @reservations == []
+			# available_rooms = rooms.select { |room| room if reservations_by_room(room, date_range).empty? }
 			available_rooms = @rooms.dup
 			@reservations.each { |reservation| 
 				available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) && reservation.date_range.start_date != date_range.end_date && reservation.date_range.end_date != date_range.start_date 
 			}
 			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
-			return available_rooms
-			# if a room class is added, this method can be simplified
-			# return @rooms if @reservations == []
-			# return @rooms.select { |room| room.num unless room.reservations.each { |reservation| reservation.date_range.overlap?(date_range) }
-
-			# Wave 3: Given a specific date, and that a room is set aside in a hotel block for that specific date, I cannot reserve that specific room for that specific date, because it is unavailable
+			return available_rooms		
 		end
 	end
 end

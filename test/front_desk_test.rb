@@ -142,11 +142,22 @@ describe "FrontDesk class" do
 				start_date: Date.new(2020,3,2), 
 				end_date: Date.new(2020,3,5)
 			)
-			@reservation = @front_desk.reserve_block(rooms, rate, date_range)
+			@block = @front_desk.reserve_block(rooms, rate, date_range)
 		end
 
 		it "can reserve a Block given a collection of rooms, a discounted room rate, and a date range" do
-			expect(@reservation).must_be_kind_of Hotel::Block
+			expect(@block).must_be_kind_of Hotel::Block
+		end
+
+		it "throws an exception if one of the rooms is unavailable for the given date range" do	
+			rooms = (1..5).to_a
+			rate = 150.0
+			date_range = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.reserve_room(date_range)
+			expect{@front_desk.reserve_block(rooms, rate, date_range)}.must_raise ArgumentError
 		end
 	end
 
