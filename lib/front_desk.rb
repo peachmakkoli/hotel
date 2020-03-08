@@ -39,11 +39,12 @@ module Hotel
 				start_date: date_range.start_date,
 				end_date: date_range.end_date
 			)
-
-			# length(rooms).times { 
-			# 	reservation = reserve_room(date_range) 
+			# @rooms.each { |room| 
+			# 	reserve_room(date_range) 
 			# 	reservation.block = new_block.id
 			# }
+			add_block(new_block)
+			return new_block
 			# Wave 3: All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
 
 			# Wave 3: Given a specific date, and that a room is set aside in a hotel block for that specific date, I cannot reserve that specific room for that specific date, because it is unavailable	
@@ -73,5 +74,7 @@ module Hotel
 			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			return available_rooms		
 		end
+
+		# I can check whether a given block has any rooms available
 	end
 end
