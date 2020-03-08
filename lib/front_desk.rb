@@ -25,6 +25,10 @@ module Hotel
 			return new_reservation
 		end
 
+		def add_block(block)
+			@blocks << block
+		end
+
 		def reserve_block(rooms, rate, date_range)
 			rooms.each { |room| raise ArgumentError.new("At least one of the rooms is unavailable for the given date range!") if !reservations_by_room(room, date_range).empty? }
 			

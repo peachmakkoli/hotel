@@ -139,6 +139,24 @@ describe "FrontDesk class" do
 		end
 	end
 
+	describe "#add_block" do
+		it "adds the block passed in to the blocks array" do
+			block = Hotel::Block.new(
+				id: 1,
+				rooms: (1..5).to_a,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			before_length = @front_desk.blocks.length
+			@front_desk.add_block(block)
+			after_length = @front_desk.blocks.length
+			expect(@front_desk.blocks.last).must_be_kind_of Hotel::Block
+			expect(before_length).must_equal 0
+			expect(after_length).must_equal 1
+		end
+	end
+
 	describe "#reserve_block" do
 		before do
 			rooms = (1..5).to_a
