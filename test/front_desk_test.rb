@@ -310,7 +310,7 @@ describe "FrontDesk class" do
 			)
 			@reservation3 = Hotel::Reservation.new(
 				id: 3,
-				room: 3,
+				room: 6,
 				start_date: Date.new(2020,3,5),
 				end_date: Date.new(2020,3,10)
 			)
@@ -325,10 +325,14 @@ describe "FrontDesk class" do
 			@front_desk.add_reservation(@reservation3)
 			@front_desk.add_reservation(@reservation4)
 			
+			rooms = (1..5).to_a
+			rate = 150.0
 			@date_range = Hotel::DateRange.new(
 				start_date: Date.new(2020,3,2), 
 				end_date: Date.new(2020,3,5)
 			)
+			@block = @front_desk.reserve_block(rooms, rate, @date_range)
+			
 			@available_rooms = @front_desk.find_available_room(@date_range)
 		end
 
@@ -340,9 +344,9 @@ describe "FrontDesk class" do
 		end
 
 		it "returns a list of rooms that are not reserved for a given date range" do
-			expect(@available_rooms.length).must_equal 18
+			expect(@available_rooms.length).must_equal 13
 			expect(@available_rooms).must_include 15
-			expect(@available_rooms).must_include 3
+			expect(@available_rooms).must_include 6
 		end
 
 		it "returns all rooms if there are no Reservations" do
