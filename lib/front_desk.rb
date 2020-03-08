@@ -1,5 +1,4 @@
 require_relative 'reservation'
-require_relative 'date_range'
 
 module Hotel
 	class FrontDesk
@@ -16,18 +15,26 @@ module Hotel
 
 		def reserve_room(date_range)
 			# Wave 3: All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
-			available_rooms = find_available_room(date_range)
-			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			
 			new_reservation = Hotel::Reservation.new(
 				id: @reservations.length + 1,
-				room: available_rooms.first,
+				room: find_available_room(date_range).first,
 				start_date: date_range.start_date,
 				end_date: date_range.end_date
 			)
 			add_reservation(new_reservation)
 			
 			return new_reservation
+		end
+
+		def reserve_block(rooms, rate, date_range)
+			new_block = Hotel::Block.new(
+				rooms: rooms,
+				rate: rate,
+				start_date: date_range.start_date,
+				end_date: date_range.end_date
+			)
+			# Wave 3: I want an exception raised if I try to create a Hotel Block and at least one of the rooms is unavailable for the given date range
 		end
 		
 		def reservations_by_room(room, date_range)
@@ -50,6 +57,7 @@ module Hotel
 			@reservations.each { |reservation| 
 				available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) && reservation.date_range.start_date != date_range.end_date && reservation.date_range.end_date != date_range.start_date 
 			}
+			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			return available_rooms
 			# if a room class is added, this method can be simplified
 			# return @rooms if @reservations == []

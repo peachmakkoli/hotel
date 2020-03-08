@@ -92,6 +92,64 @@ describe "FrontDesk class" do
 		end
 	end
 
+	describe "#reserve_room" do
+		before do
+			date_range1 = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			date_range2 = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,7), 
+				end_date: Date.new(2020,3,10)
+			)
+			date_range3 = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,12), 
+				end_date: Date.new(2020,3,15)
+			)
+			@reservation1 = @front_desk.reserve_room(date_range1)
+			@reservation2 = @front_desk.reserve_room(date_range2)
+			@reservation3 = @front_desk.reserve_room(date_range3)
+		end
+
+		it "can reserve a room given a start date and an end date" do
+			expect(@reservation1).must_be_kind_of Hotel::Reservation
+		end
+
+		it "assigns a unique id number to each Reservation" do
+			expect(@reservation1.id).must_equal 1
+			expect(@reservation2.id).must_equal 2
+			expect(@reservation3.id).must_equal 3
+		end
+
+		it "assigns a valid room number" do
+			expect(@front_desk.rooms).must_include @reservation1.room
+			expect(@front_desk.rooms).must_include @reservation2.room
+			expect(@front_desk.rooms).must_include @reservation3.room
+		end
+
+		it "adds the new reservations to the reservations array" do
+			expect(@front_desk.reservations.length).must_equal 3
+			expect(@front_desk.reservations.first).must_equal @reservation1
+			expect(@front_desk.reservations.last).must_equal @reservation3
+		end
+	end
+
+	describe "#reserve_block" do
+		before do
+			rooms = (1..5).to_a
+			rate = 150.0
+			date_range = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			@reservation = @front_desk.reserve_block(rooms, rate, date_range)
+		end
+
+		it "can reserve a Block given a collection of rooms, a discounted room rate, and a date range" do
+			expect(@reservation).must_be_kind_of Hotel::Block
+		end
+	end
+
 	describe "#reservations_by_room" do
 		before do
 			@reservation1 = Hotel::Reservation.new(
@@ -239,6 +297,16 @@ describe "FrontDesk class" do
 			available_rooms = @front_desk.find_available_room(@date_range)
 			expect(@front_desk.reservations.length).must_equal 0 
 			expect(available_rooms).must_equal @front_desk.rooms
+		end
+
+		it "throws an exception if there are no rooms available" do
+			@front_desk.rooms.clear
+			date_range = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			expect(@front_desk.rooms.length).must_equal 0 
+			expect{@front_desk.reserve_room(date_range)}.must_raise ArgumentError
 		end
 	end
 end
