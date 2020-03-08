@@ -30,7 +30,9 @@ module Hotel
 		end
 
 		def reserve_block(rooms, rate, date_range)
-			rooms.each { |room| raise ArgumentError.new("At least one of the rooms is unavailable for the given date range!") if !reservations_by_room(room, date_range).empty? }
+			rooms.each { |room| 
+				raise ArgumentError.new("At least one of the rooms is unavailable for the given date range!") if !reservations_by_room(room, date_range).empty? 
+			}
 			
 			new_block = Hotel::Block.new(
 				id: @blocks.length + 1,
@@ -39,15 +41,20 @@ module Hotel
 				start_date: date_range.start_date,
 				end_date: date_range.end_date
 			)
-			# @rooms.each { |room| 
-			# 	reserve_room(date_range) 
-			# 	reservation.block = new_block.id
-			# }
 			add_block(new_block)
-			return new_block
-			# Wave 3: All of the availability checking logic from Wave 2 should now respect room blocks as well as individual reservations
 
-			# Wave 3: Given a specific date, and that a room is set aside in a hotel block for that specific date, I cannot reserve that specific room for that specific date, because it is unavailable	
+			# rooms.each { |room| 
+			# 	new_reservation = Hotel::Reservation.new(
+			# 		id: @reservations.length + 1,
+			# 		room: room,
+			# 		block: new_block.id,
+			# 		start_date: date_range.start_date,
+			# 		end_date: date_range.end_date
+			# 	)
+			# 	add_reservation(new_reservation)
+			# }
+
+			return new_block
 		end
 		
 		def reservations_by_room(room, date_range)
@@ -56,25 +63,28 @@ module Hotel
 			}
 		end
 
+		def reservations_by_block(block_id, date_range)
+			# Wave 3: I can see a reservation made from a hotel block from the list of reservations for that date (see wave 1 requirements)
+		end
+
 		def reservations_by_date(date)
 			return @reservations.select { |reservation| 
 				reservation.date_range.include?(date) 
 			}
-			# Wave 3: I can see a reservation made from a hotel block from the list of reservations for that date (see wave 1 requirements)
 		end
 
 		# SPACE COMPLEXITY!!!
 		def find_available_room(date_range)
 			return @rooms if @reservations == []
-			# available_rooms = rooms.select { |room| room if reservations_by_room(room, date_range).empty? }
+			# available_rooms = rooms.select { |room| 
+			# 	room if reservations_by_room(room, date_range).empty? 
+			# }
 			available_rooms = @rooms.dup
 			@reservations.each { |reservation| 
-				available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) && reservation.date_range.start_date != date_range.end_date && reservation.date_range.end_date != date_range.start_date 
+				available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) && reservation.date_range.start_date != date_range.end_date && reservation.date_range.end_date != date_range.start_date
 			}
 			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			return available_rooms		
 		end
-
-		# I can check whether a given block has any rooms available
 	end
 end
