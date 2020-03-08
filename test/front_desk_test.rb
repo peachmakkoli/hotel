@@ -183,16 +183,23 @@ describe "FrontDesk class" do
 			expect{@front_desk.reserve_block(rooms, rate, date_range)}.must_raise ArgumentError
 		end
 
+		it "adds the new Block to the blocks array" do
+			expect(@front_desk.blocks.length).must_equal 1
+			expect(@front_desk.blocks.first).must_equal @block
+		end
+
 		it "creates a reservation for each room in the Block" do
-			
-			# expect the list of reservations to be 5 in length
-			# expect the first in the list to have room 1
-			# expect the last in the list to have room 2
+			first = @front_desk.reservations.first
+			last = @front_desk.reservations.last
+			expect(@front_desk.reservations.length).must_equal 5
+			expect(first.room).must_equal 1
+			expect(last.room).must_equal 5
 		end
 
 		it "sets @block in each Reservation to the Block id" do
-			
-			# expect reservation.block to equal block.id
+			@front_desk.reservations.each { |reservation|
+				expect(reservation.block).must_equal @block.id
+			}
 		end
 	end
 
