@@ -481,4 +481,46 @@ describe "FrontDesk class" do
 			expect{@front_desk.find_available_room_in_block(1)}.must_raise ArgumentError
 		end
 	end
+
+	describe "#reserve_room_in_block" do
+		before do
+			@block = Hotel::Block.new(
+				id: 1,
+				rooms: (1..5).to_a,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.add_block(@block)
+
+			@reservation1 = Hotel::Reservation.new(
+				id: 1,
+				room: 1,
+				block: 1,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.add_reservation(@reservation1)
+
+			@reservation2 = @front_desk.reserve_room_in_block(1, 2)
+		end
+
+		it "can reserve a specific room from a hotel block" do
+			expect(@reservation2).must_be_kind_of Hotel::Reservation
+			expect(@block.rooms).must_include @reservation2.room
+		end
+
+		it "assigns a unique id number to each Reservation" do
+			expect(@reservation1.id).must_equal 1
+			expect(@reservation2.id).must_equal 2
+			expect(@reservation3.id).must_equal 3
+		end
+
+		it "adds the new reservation to the reservations array" do
+			expect(@front_desk.reservations.length).must_equal 2
+			expect(@front_desk.reservations.first).must_equal @reservation1
+			expect(@front_desk.reservations.last).must_equal @reservation2
+		end
+	end
 end
