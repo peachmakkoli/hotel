@@ -1,4 +1,4 @@
-require 'date'
+require_relative 'date_range'
 
 module Hotel
 	class Block
