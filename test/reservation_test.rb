@@ -29,13 +29,24 @@ describe "Reservation class" do
 	end
 
 	describe "#total_cost" do
-		it "accurately calculates the total cost for single rooms" do
+		it "accurately calculates the total cost for single rooms with the default rate" do
 			expect(@reservation.total_cost).must_equal 600.0
 		end
 
-		it "accurately calculates the total cost for hotel blocks" do
-			# @ block = Hotel::Block.new()
-			# expect(@reservation.total_cost).must_equal 
+		it "accurately calculates the total cost for a room reserved from a hotel block" do
+			@front_desk = Hotel::FrontDesk.new
+			block = Hotel::Block.new(
+				id: 1,
+				rooms: (1..5).to_a,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.add_block(block)
+
+			reservation = @front_desk.reserve_room_in_block(1, 1)
+			
+			expect(reservation.total_cost).must_equal 450.0
 		end
 	end
 end
