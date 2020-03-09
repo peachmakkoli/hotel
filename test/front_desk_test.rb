@@ -511,10 +511,8 @@ describe "FrontDesk class" do
 			expect(@block.rooms).must_include @reservation2.room
 		end
 
-		it "assigns a unique id number to each Reservation" do
-			expect(@reservation1.id).must_equal 1
+		it "assigns a unique id number to the new reservation" do
 			expect(@reservation2.id).must_equal 2
-			expect(@reservation3.id).must_equal 3
 		end
 
 		it "adds the new reservation to the reservations array" do
