@@ -25,7 +25,17 @@ describe "Reservation class" do
 			expect(@reservation.block).must_equal false
 			expect(@reservation.rate).must_be_kind_of Float
 			expect(@reservation.date_range).must_be_kind_of Hotel::DateRange
-    end
+		end
+		
+		it "throws an exception if the custom rate cannot be converted to a float" do
+			expect{Hotel::Reservation.new(
+				id: 1,
+				room: 15,
+				rate: "a",
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)}.must_raise ArgumentError
+		end
 	end
 
 	describe "#total_cost" do

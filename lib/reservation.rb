@@ -8,11 +8,13 @@ module Hotel
 			@id = id
 			@room = room
 			@block = block
-			@rate = rate
+			@rate = rate.to_f
 			@date_range = Hotel::DateRange.new(
 				start_date: start_date, 
 				end_date: end_date
 			)
+
+			raise ArgumentError.new("Invalid rate!") if rate.class != Float
 		end	
 
 		def total_cost
