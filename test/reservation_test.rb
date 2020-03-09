@@ -16,13 +16,14 @@ describe "Reservation class" do
 		end
 
 		it "is set up for specific attributes and data types" do
-      [:id, :room, :block, :date_range].each do |attribute|
+      [:id, :room, :block, :rate, :date_range].each do |attribute|
         expect(@reservation).must_respond_to attribute
       end
 
       expect(@reservation.id).must_be_kind_of Integer
 			expect(@reservation.room).must_be_kind_of Integer
 			expect(@reservation.block).must_equal false
+			expect(@reservation.rate).must_be_kind_of Float
 			expect(@reservation.date_range).must_be_kind_of Hotel::DateRange
     end
 	end
