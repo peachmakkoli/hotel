@@ -4,11 +4,11 @@ module Hotel
 	class Reservation
 		attr_reader :id, :room, :block, :rate, :date_range
 
-		def initialize(id:, room:, block: false, start_date:, end_date:)
+		def initialize(id:, room:, block: false, rate: 200.0, start_date:, end_date:)
 			@id = id
 			@room = room
 			@block = block
-			@rate = 200.0
+			@rate = rate
 			@date_range = Hotel::DateRange.new(
 				start_date: start_date, 
 				end_date: end_date
