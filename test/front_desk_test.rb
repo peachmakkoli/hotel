@@ -187,20 +187,6 @@ describe "FrontDesk class" do
 			expect(@front_desk.blocks.length).must_equal 1
 			expect(@front_desk.blocks.first).must_equal @block
 		end
-
-		# it "creates a reservation for each room in the Block" do
-		# 	first = @front_desk.reservations.first
-		# 	last = @front_desk.reservations.last
-		# 	expect(@front_desk.reservations.length).must_equal 5
-		# 	expect(first.room).must_equal 1
-		# 	expect(last.room).must_equal 5
-		# end
-
-		# it "sets @block in each Reservation to the Block id" do
-		# 	@front_desk.reservations.each { |reservation|
-		# 		expect(reservation.block).must_equal @block.id
-		# 	}
-		# end
 	end
 
 	describe "#reservations_by_room" do
@@ -292,6 +278,18 @@ describe "FrontDesk class" do
 			expect(@selected_reservations.first).must_equal @reservation1
 			expect(@selected_reservations.last).must_equal @reservation2
 		end
+
+		it "can see a reservation made from a hotel block for a specific date" do
+			# rooms = (1..5).to_a
+			# rate = 150.0
+			# date_range = Hotel::DateRange.new(
+			# 	start_date: Date.new(2020,3,2), 
+			# 	end_date: Date.new(2020,3,5)
+			# )
+			# block = @front_desk.reserve_block(rooms, rate, date_range)
+			# create a reservation made from a hotel block
+			# expect the reservation to include block.id
+		end
 	end
 
 	describe "#find_available_room" do
@@ -365,6 +363,35 @@ describe "FrontDesk class" do
 			)
 			expect(@front_desk.rooms.length).must_equal 0 
 			expect{@front_desk.reserve_room(date_range)}.must_raise ArgumentError
+		end
+	end
+
+	describe "find_block" do
+		before do
+			@block1 = Hotel::Block.new(
+				id: 1,
+				rooms: (1..5).to_a,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			) 
+			@block2 = Hotel::Block.new(
+				id: 2,
+				rooms: (6..10).to_a,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			) 
+			@front_desk.add_block(@block1)
+			@front_desk.add_block(@block2)
+		end
+
+		it "throws an exception if no Blocks match id given" do
+			expect{@front_desk.find_block(3)}.must_raise ArgumentError
+		end
+
+		it "returns the correct block" do
+			expect(@front_desk.find_block(2)).must_equal @block2
 		end
 	end
 end
