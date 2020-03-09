@@ -131,7 +131,7 @@ describe "FrontDesk class" do
 		end
 
 		it "throws an exception if at least one of the rooms is unavailable for the given date range" do	
-			rooms = (1..5).to_a
+			rooms = (6..10).to_a
 			rate = 150.0
 			date_range = Hotel::DateRange.new(
 				start_date: Date.new(2020,3,2), 
@@ -139,7 +139,7 @@ describe "FrontDesk class" do
 			)
 			reservation = Hotel::Reservation.new(
 				id: 1,
-				room: 1,
+				room: 6,
 				start_date: Date.new(2020,3,2),
 				end_date: Date.new(2020,3,5)
 			)
@@ -147,15 +147,14 @@ describe "FrontDesk class" do
 			expect{@front_desk.reserve_block(rooms, rate, date_range)}.must_raise ArgumentError
 		end
 
-		it "throws an exception if the new block includes a specific room from an existing block" do
-			rooms = (2..6).to_a
+		it "throws an exception if at least one of the rooms can be found in an existing hotel block for the given date range" do	
+			rooms = (5..9).to_a
 			rate = 150.0
 			date_range = Hotel::DateRange.new(
 				start_date: Date.new(2020,3,2), 
 				end_date: Date.new(2020,3,5)
 			)
-			new_block = @front_desk.reserve_block(rooms, rate, date_range)
-			expect{new_block}.must_raise ArgumentError
+			expect{@front_desk.reserve_block(rooms, rate, date_range)}.must_raise ArgumentError
 		end
 
 		it "adds the new Block to the blocks array" do
@@ -324,7 +323,7 @@ describe "FrontDesk class" do
 			expect(@available_rooms).must_include 6
 		end
 
-		it "returns all rooms if there are no Reservations and no Blocks" do
+		it "returns all rooms if there are no reservations and no blocks" do
 			@front_desk.reservations.clear
 			@front_desk.blocks.clear
 			available_rooms = @front_desk.find_available_room(@date_range)
