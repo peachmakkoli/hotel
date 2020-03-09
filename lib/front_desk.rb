@@ -86,19 +86,18 @@ module Hotel
 
 			# I can reserve a specific room from a hotel block
 			# I can only reserve that room from a hotel block for the full duration of the block
-			def reserve_room_in_block(id)
-			# finds block by id
-			# creates reservation for first available room in block & sets rate to hotel block rate
-			# rooms.each { |room| 
-			# 	new_reservation = Hotel::Reservation.new(
-			# 		id: @reservations.length + 1,
-			# 		room: room,
-			# 		block: new_block.id,
-			# 		start_date: date_range.start_date,
-			# 		end_date: date_range.end_date
-			# 	)
-			# 	add_reservation(new_reservation)
-			# }
-			end
+			def reserve_room_in_block(id, room)
+				block = find_block(id)
+				new_reservation = Hotel::Reservation.new(
+					id: @reservations.length + 1,
+					room: room,
+					block: block.id,
+					rate: block.rate,
+					start_date: block.date_range.start_date,
+					end_date: block.date_range.end_date
+				)
+			add_reservation(new_reservation)
+			return new_reservation
+		end
 	end
 end
