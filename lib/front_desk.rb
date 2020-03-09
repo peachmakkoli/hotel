@@ -31,7 +31,7 @@ module Hotel
 
 		def reserve_block(rooms, rate, date_range)
 			rooms.each { |room| 
-				raise ArgumentError.new("At least one of the rooms is unavailable for the given date range!") if !reservations_by_room(room, date_range).empty? 
+				raise ArgumentError.new("At least one of the rooms is unavailable for the given date range!") if !rooms.any? { |room| find_available_room(date_range).include?(room) }
 			}
 			
 			new_block = Hotel::Block.new(
@@ -90,4 +90,3 @@ module Hotel
 		end
 	end
 end
-			# if !rooms.any? { |room| find_available_room(date_range).include?(room) }
