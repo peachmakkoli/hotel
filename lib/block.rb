@@ -1,7 +1,7 @@
 require_relative 'date_range'
 
 module Hotel
-	class Block
+	class Block 
 		attr_reader :id, :rooms, :rate, :date_range
 
 		def initialize(id:, rooms:, rate:, start_date:, end_date:)
@@ -15,10 +15,5 @@ module Hotel
 			
 			raise ArgumentError.new("Block must contain between 2 and 5 rooms!") if @rooms.length < 2 || @rooms.length > 5
 		end
-
-		# I can check whether a given block has any rooms available
-
-		# I can reserve a specific room from a hotel block
-		# I can only reserve that room from a hotel block for the full duration of the block
 	end
 end
