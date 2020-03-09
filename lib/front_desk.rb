@@ -1,5 +1,3 @@
-require_relative 'reservation'
-
 module Hotel
 	class FrontDesk
 		attr_reader :rooms, :reservations, :blocks
