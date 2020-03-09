@@ -349,8 +349,9 @@ describe "FrontDesk class" do
 			expect(@available_rooms).must_include 6
 		end
 
-		it "returns all rooms if there are no Reservations" do
+		it "returns all rooms if there are no Reservations and no Blocks" do
 			@front_desk.reservations.clear
+			@front_desk.blocks.clear
 			available_rooms = @front_desk.find_available_room(@date_range)
 			expect(@front_desk.reservations.length).must_equal 0 
 			expect(available_rooms).must_equal @front_desk.rooms
