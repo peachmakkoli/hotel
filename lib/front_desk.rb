@@ -76,16 +76,19 @@ module Hotel
 				return @blocks.find { |block| block.id == id }
 			end
 
-			# I can check whether a given block has any rooms available
 			def find_available_room_in_block(id)
-				# look up reservations that match the block id, exclude their rooms from the list of rooms it returns
+				block = find_block(id)
+				unavailable_rooms = @reservations.map { |reservation| reservation.room if reservation.block == block.id }
+				available_rooms = block.rooms - unavailable_rooms
+				raise ArgumentError.new("No rooms available in the given block!") if available_rooms.empty?
+				return available_rooms
 			end
 
 			# I can reserve a specific room from a hotel block
 			# I can only reserve that room from a hotel block for the full duration of the block
-			def reserve_room_in_block(id, room)
+			def reserve_room_in_block(id)
 			# finds block by id
-			# creates reservation for that room
+			# creates reservation for first available room in block & sets rate to hotel block rate
 			# rooms.each { |room| 
 			# 	new_reservation = Hotel::Reservation.new(
 			# 		id: @reservations.length + 1,

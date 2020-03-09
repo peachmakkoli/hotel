@@ -352,6 +352,7 @@ describe "FrontDesk class" do
 			@front_desk.blocks.clear
 			available_rooms = @front_desk.find_available_room(@date_range)
 			expect(@front_desk.reservations.length).must_equal 0 
+			expect(@front_desk.blocks.length).must_equal 0 
 			expect(available_rooms).must_equal @front_desk.rooms
 		end
 
@@ -362,7 +363,7 @@ describe "FrontDesk class" do
 				end_date: Date.new(2020,3,5)
 			)
 			expect(@front_desk.rooms.length).must_equal 0 
-			expect{@front_desk.reserve_room(date_range)}.must_raise ArgumentError
+			expect{@front_desk.find_available_room(date_range)}.must_raise ArgumentError
 		end
 	end
 
@@ -392,6 +393,92 @@ describe "FrontDesk class" do
 
 		it "returns the correct block" do
 			expect(@front_desk.find_block(2)).must_equal @block2
+		end
+	end
+
+	describe "#find_available_room_in_block" do
+		before do
+			@block = Hotel::Block.new(
+				id: 1,
+				rooms: (1..5).to_a,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.add_block(@block)
+
+			@reservation = Hotel::Reservation.new(
+				id: 1,
+				room: 1,
+				block: 1,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.add_reservation(@reservation)
+
+			@available_rooms = @front_desk.find_available_room_in_block(1)
+		end
+
+		it "returns an array of valid room numbers" do
+			expect(@available_rooms).must_be_kind_of Array
+			expect(@available_rooms.first).must_be_kind_of Integer
+			expect(@block.rooms).must_include @available_rooms.first
+			expect(@block.rooms).must_include @available_rooms.last
+		end
+
+		it "returns a list of rooms that are not reserved for a given date range" do
+			expect(@available_rooms.length).must_equal 4
+			expect(@available_rooms).wont_include 1
+		end
+
+		it "returns all rooms if there are no Reservations with the given block id" do
+			@front_desk.reservations.clear
+			available_rooms = @front_desk.find_available_room_in_block(1)
+			expect(@front_desk.reservations.length).must_equal 0 
+			expect(available_rooms).must_equal @block.rooms
+		end
+
+		it "throws an exception if there are no rooms available" do
+			reservation2 = Hotel::Reservation.new(
+				id: 2,
+				room: 2,
+				block: 1,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			reservation3 = Hotel::Reservation.new(
+				id: 3,
+				room: 3,
+				block: 1,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			reservation4 = Hotel::Reservation.new(
+				id: 4,
+				room: 4,
+				block: 1,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			reservation5 = Hotel::Reservation.new(
+				id: 5,
+				room: 5,
+				block: 1,
+				rate: 150.0,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.add_reservation(reservation2)
+			@front_desk.add_reservation(reservation3)
+			@front_desk.add_reservation(reservation4)
+			@front_desk.add_reservation(reservation5)
+
+			expect(@front_desk.reservations.length).must_equal 5 
+			expect{@front_desk.find_available_room_in_block(1)}.must_raise ArgumentError
 		end
 	end
 end
