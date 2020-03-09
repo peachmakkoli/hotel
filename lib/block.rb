@@ -1,5 +1,3 @@
-require_relative 'date_range'
-
 module Hotel
 	class Block 
 		attr_reader :id, :rooms, :rate, :date_range
