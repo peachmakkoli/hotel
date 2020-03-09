@@ -75,16 +75,19 @@ module Hotel
 
 		# SPACE COMPLEXITY!!!
 		def find_available_room(date_range)
-			return @rooms if @reservations == []
-			# available_rooms = rooms.select { |room| 
-			# 	room if reservations_by_room(room, date_range).empty? 
-			# }
+			# select rooms that aren't reserved during the date range (excluding start and end dates) and rooms that are not part of a block during that date range
 			available_rooms = @rooms.dup
 			@reservations.each { |reservation| 
-				available_rooms.delete(reservation.room) if reservation.date_range.overlap?(date_range) && reservation.date_range.start_date != date_range.end_date && reservation.date_range.end_date != date_range.start_date
+				available_rooms.delete(reservation.room) if reservation.date_range.start_date < date_range.end_date && reservation.date_range.end_date > date_range.start_date
+			}
+			@blocks.each { |block| 
+				(block.rooms).each { |room|
+				available_rooms.delete(room)
+				} if block.date_range.start_date < date_range.end_date && block.date_range.end_date > date_range.start_date
 			}
 			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			return available_rooms		
 		end
 	end
 end
+			# if !rooms.any? { |room| find_available_room(date_range).include?(room) }
