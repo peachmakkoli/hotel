@@ -14,10 +14,11 @@ module Hotel
 			@reservations << reservation
 		end
 
-		def reserve_room(date_range)
+		def reserve_room(date_range, rate = 200.0)
 			new_reservation = Hotel::Reservation.new(
 				id: @reservations.length + 1,
 				room: find_available_room(date_range).first,
+				rate: rate.to_f,
 				start_date: date_range.start_date,
 				end_date: date_range.end_date
 			)

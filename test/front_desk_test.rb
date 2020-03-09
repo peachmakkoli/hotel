@@ -68,6 +68,15 @@ describe "FrontDesk class" do
 			expect(@reservation1).must_be_kind_of Hotel::Reservation
 		end
 
+		it "can set different rates for different rooms" do
+			date_range4 = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			reservation4 = @front_desk.reserve_room(date_range4, 300.0)
+			expect(reservation4.rate).must_equal 300.0
+		end
+
 		it "throws an exception if there are no rooms available" do
 			@front_desk.rooms.clear
 			date_range = Hotel::DateRange.new(
@@ -126,7 +135,7 @@ describe "FrontDesk class" do
 			@block = @front_desk.reserve_block(rooms, rate, date_range)
 		end
 
-		it "can reserve a Block given a collection of rooms, a discounted room rate, and a date range" do
+		it "can reserve a block given a collection of rooms, a discounted room rate, and a date range" do
 			expect(@block).must_be_kind_of Hotel::Block
 		end
 
