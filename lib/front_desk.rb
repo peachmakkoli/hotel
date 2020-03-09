@@ -42,18 +42,6 @@ module Hotel
 				end_date: date_range.end_date
 			)
 			add_block(new_block)
-
-			# rooms.each { |room| 
-			# 	new_reservation = Hotel::Reservation.new(
-			# 		id: @reservations.length + 1,
-			# 		room: room,
-			# 		block: new_block.id,
-			# 		start_date: date_range.start_date,
-			# 		end_date: date_range.end_date
-			# 	)
-			# 	add_reservation(new_reservation)
-			# }
-
 			return new_block
 		end
 		
@@ -63,19 +51,13 @@ module Hotel
 			}
 		end
 
-		def reservations_by_block(block_id, date_range)
-			# Wave 3: I can see a reservation made from a hotel block from the list of reservations for that date (see wave 1 requirements)
-		end
-
 		def reservations_by_date(date)
 			return @reservations.select { |reservation| 
 				reservation.date_range.include?(date) 
 			}
 		end
 
-		# SPACE COMPLEXITY!!!
 		def find_available_room(date_range)
-			# select rooms that aren't reserved during the date range (excluding start and end dates) and rooms that are not part of a block during that date range
 			available_rooms = @rooms.dup
 			@reservations.each { |reservation| 
 				available_rooms.delete(reservation.room) if reservation.date_range.start_date < date_range.end_date && reservation.date_range.end_date > date_range.start_date
@@ -88,5 +70,32 @@ module Hotel
 			raise ArgumentError.new("No rooms available for that date range!") if available_rooms == []
 			return available_rooms		
 		end
+
+			def find_block(id)
+				raise ArgumentError.new("No blocks with the given ID!") if @blocks.none? { |block| block.id == id }
+				return @blocks.find { |block| block.id == id }
+			end
+
+			# I can check whether a given block has any rooms available
+			def find_available_room_in_block(id)
+				# look up reservations that match the block id, exclude their rooms from the list of rooms it returns
+			end
+
+			# I can reserve a specific room from a hotel block
+			# I can only reserve that room from a hotel block for the full duration of the block
+			def reserve_room_in_block(id, room)
+			# finds block by id
+			# creates reservation for that room
+			# rooms.each { |room| 
+			# 	new_reservation = Hotel::Reservation.new(
+			# 		id: @reservations.length + 1,
+			# 		room: room,
+			# 		block: new_block.id,
+			# 		start_date: date_range.start_date,
+			# 		end_date: date_range.end_date
+			# 	)
+			# 	add_reservation(new_reservation)
+			# }
+			end
 	end
 end
