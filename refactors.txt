@@ -6,7 +6,7 @@ lib/front_desk.rb
 - Since the program will be used by employees of the hotel and not the general public, I thought FrontDesk would be more descriptive. But if the program is ported to an online reservation system that is open to the general public, the class name should probably change to HotelController or ReservationSystem.
 
 2) #find_available_room 
-- TIME COMPLEXITY is O(n^2)! This method is very expensive because it iterates through two arrays of unknown size and it creates a new array in memory each time it adds a room to the unavailable_rooms list. 
+- This method is very expensive because it iterates through two arrays of unknown size (time complexity is O(n^2)) and it creates a new array in memory each time it adds a room to the unavailable_rooms list (space complexity is O(n)).
 - If I created a Room class that knew its Reservations and/or the Blocks it belonged to during a DateRange, I could refactor this method to just use the #reject enumerable, rejecting any rooms that met the existing conditionals.
 
 3) any method that has date_range as a parameter
