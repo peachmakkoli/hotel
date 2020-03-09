@@ -130,15 +130,32 @@ describe "FrontDesk class" do
 			expect(@block).must_be_kind_of Hotel::Block
 		end
 
-		it "throws an exception if one of the rooms is unavailable for the given date range" do	
+		it "throws an exception if at least one of the rooms is unavailable for the given date range" do	
 			rooms = (1..5).to_a
 			rate = 150.0
 			date_range = Hotel::DateRange.new(
 				start_date: Date.new(2020,3,2), 
 				end_date: Date.new(2020,3,5)
 			)
-			@front_desk.reserve_room(date_range)
+			reservation = Hotel::Reservation.new(
+				id: 1,
+				room: 1,
+				start_date: Date.new(2020,3,2),
+				end_date: Date.new(2020,3,5)
+			)
+			@front_desk.add_reservation(reservation)
 			expect{@front_desk.reserve_block(rooms, rate, date_range)}.must_raise ArgumentError
+		end
+
+		it "throws an exception if the new block includes a specific room from an existing block" do
+			rooms = (2..6).to_a
+			rate = 150.0
+			date_range = Hotel::DateRange.new(
+				start_date: Date.new(2020,3,2), 
+				end_date: Date.new(2020,3,5)
+			)
+			new_block = @front_desk.reserve_block(rooms, rate, date_range)
+			expect{new_block}.must_raise ArgumentError
 		end
 
 		it "adds the new Block to the blocks array" do
